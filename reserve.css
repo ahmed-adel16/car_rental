@@ -62,7 +62,30 @@ body {
 }
 
 .car-section .car-container .car-card {
-    height: 100px;
-    width: 200px;
-    background-color: antiquewhite;
+    width: 23%;
+    min-width: 250px;
+    padding: 10px 12px;
+    border : 1px solid #cce7d0;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, .02);
+    margin: 5px 0px;
+    transition: box-shadow 0.2s ease;
+    position: relative;
+}
+.car-section .car-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    margin: 0px 50px 0px 50px;
+}
+
+.car-section {
+   text-align: center;
+}
+
+.car-card img {
+    width: 100%;
+    border-radius: 20px;
 }
