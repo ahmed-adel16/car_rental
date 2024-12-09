@@ -8,10 +8,90 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
+// Include database connection
+require_once 'db_connect.php'; // Ensure this file contains the correct database connection
+
 $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
 $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
 unset($_SESSION['success_message']);
 unset($_SESSION['error_message']);
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Collect and sanitize input
+    $office_name = trim($_POST['office_name']);
+    $location = trim($_POST['location']);
+    $phone_number = trim($_POST['phone_number']);
+    $email = trim($_POST['email']);
+
+    // Validation flags
+    $valid = true;
+
+    // Validate office_name
+    if (empty($office_name)) {
+        $_SESSION['error_message'] = "Office name is required.";
+        $valid = false;
+    }
+
+    // Validate location
+    if (empty($location)) {
+        $_SESSION['error_message'] = "Location is required.";
+        $valid = false;
+    }
+
+    // Validate phone number (only digits)
+    if (!preg_match('/^\d+$/', $phone_number)) {
+        $_SESSION['error_message'] = "Phone number must contain only digits.";
+        $valid = false;
+    }
+
+    // Validate email
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['error_message'] = "Invalid email format.";
+        $valid = false;
+    }
+
+    // Check if office with the same name exists in the same location
+    if ($valid) {
+        $check_query = "SELECT * FROM Offices WHERE office_name = ? AND location = ?";
+        $check_stmt = $conn->prepare($check_query);
+        if ($check_stmt) {
+            $check_stmt->bind_param("ss", $office_name, $location);
+            $check_stmt->execute();
+            $result = $check_stmt->get_result();
+            if ($result->num_rows > 0) {
+                $_SESSION['error_message'] = "Office with this name already exists in $location.";
+                $valid = false;
+            }
+            $check_stmt->close();
+        } else {
+            $_SESSION['error_message'] = "Database error: " . $conn->error;
+            $valid = false;
+        }
+    }
+
+    // Proceed to insert if all validations pass
+    if ($valid) {
+        $query = "INSERT INTO Offices (office_name, location, phone_number, email) VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($query);
+        if ($stmt) {
+            $stmt->bind_param("ssss", $office_name, $location, $phone_number, $email);
+            if ($stmt->execute()) {
+                $_SESSION['success_message'] = "Office added successfully.";
+                header("Location: admin_dashboard.php"); // Redirect on success
+                exit();
+            } else {
+                $_SESSION['error_message'] = "Error: " . $stmt->error;
+            }
+            $stmt->close();
+        } else {
+            $_SESSION['error_message'] = "Database error: " . $conn->error;
+        }
+    }
+
+    header("Location: add_office.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,36 +102,35 @@ unset($_SESSION['error_message']);
     <title>Add Office - Car Rental</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* General button style */
+        /* Existing styles preserved */
         .btn {
             display: inline-block;
-            background-color: #1879CA; /* Primary color */
-            color: white; /* White text */
-            padding: 10px 20px; /* Padding for oval shape */
+            background-color: #1879CA;
+            color: white;
+            padding: 10px 20px;
             border: none;
-            border-radius: 20px; /* Fully rounded corners for oval shape */
+            border-radius: 20px;
             font-size: 16px;
             cursor: pointer;
             text-align: center;
-            text-decoration: none; /* Remove underline from links */
+            text-decoration: none;
             transition: background-color 0.3s, color 0.3s;
-            margin-top: 15px; /* Adds space between the button and the form */
-            width: 100%; /* Makes the button the same width as input fields */
-            max-width: 300px; /* Limits the width to match input fields */
-            margin-left: auto; /* Centers the button */
-            margin-right: auto; /* Centers the button */
+            margin-top: 15px;
+            width: 100%;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .btn:hover {
-            background-color: rgb(236, 236, 236); /* Hover background color */
-            color: #1879CA; /* Hover text color */
+            background-color: rgb(236, 236, 236);
+            color: #1879CA;
         }
 
         .btn:focus {
-            background-color: rgba(203, 203, 203, 0.6); /* Focus background color */
+            background-color: rgba(203, 203, 203, 0.6);
         }
 
-        /* Style for input fields */
         input[type="text"], input[type="email"], select {
             width: 100%;
             padding: 10px;
@@ -90,29 +169,22 @@ unset($_SESSION['error_message']);
                 </div>
             <?php endif; ?>
 
-            <!-- Add Office Form -->
             <form action="add_office.php" method="POST">
                 <input type="text" name="office_name" placeholder="Office Name" required>
-                
-                <!-- Location Dropdown -->
                 <select name="location" required>
                     <option value="" disabled selected>Select Location</option>
                     <option value="Alexandria">Alexandria</option>
                     <option value="Cairo">Cairo</option>
                     <option value="Giza">Giza</option>
                 </select>
-
                 <input type="text" name="phone_number" placeholder="Phone Number" required>
                 <input type="email" name="email" placeholder="Email" required>
-
                 <input type="submit" class="btn" value="Add Office">
             </form>
 
-            <!-- Back to Dashboard Button -->
             <form action="admin_dashboard.php" method="GET">
                 <input type="submit" class="btn" value="Back to Dashboard">
             </form>
-
         </div>
     </div>
 </body>
