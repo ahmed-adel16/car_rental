@@ -3,11 +3,6 @@ session_start(); // Initialize session
 
 require_once 'db_connect.php'; // Database connection
 
-$success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
-$error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
-unset($_SESSION['success_message']);
-unset($_SESSION['error_message']);
-
 // Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
@@ -19,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     $result = $stmt->get_result();
 
+    // If a user exists
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
 
@@ -40,7 +36,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // No user found with that email
         $_SESSION['error_message'] = "Invalid email or password.";
     }
+
+    // Redirect to the same page to show error message
+    header("Location: index.php");
+    exit(); // Ensure no further code executes after redirect
 }
+
+$success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
+$error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+unset($_SESSION['success_message']);
+unset($_SESSION['error_message']);
 ?>
 
 <!DOCTYPE html>
@@ -85,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
 
             <button class="create-account-btn" onclick="window.location.href='register.php';">Register</button>
+            <button class="create-account-btn" onclick="window.location.href='admin_login.php';">Login as Admin</button> <!-- Admin login button -->
         </div>
     </div>
 </body>
