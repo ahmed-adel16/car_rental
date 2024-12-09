@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$first_name = $_SESSION['first_name']; // We saved the first name during login
+$first_name = $_SESSION['first_name'] ?? ''; // We saved the first name during login
 
 // Navbar Link Logic
 $homeLink = isset($_SESSION['user_id']) ? "user_home.php" : "index.php";
@@ -39,9 +39,9 @@ $homeLink = isset($_SESSION['user_id']) ? "user_home.php" : "index.php";
         <div class="login">
             <h2>Welcome, <?php echo htmlspecialchars($first_name); ?>!</h2>
 
-            <button class="create-account-btn" onclick="window.location.href='logout.php';">Logout</button>
-            <button class="create-account-btn" onclick="window.location.href='view_reserved.php';">View Reserved Cars</button>
-            <button class="create-account-btn" onclick="window.location.href='reserve.php';">Reserve a Car</button>
+            <button class="btn" onclick="window.location.href='logout.php';">Logout</button>
+            <button class="btn" onclick="window.location.href='view_reserved.php';">View Reserved Cars</button>
+            <button class="btn" onclick="window.location.href='reserve.php';">Reserve a Car</button>
         </div>
     </div>
 </body>

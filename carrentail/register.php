@@ -95,11 +95,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="text" name="phone_number" placeholder="Phone Number" required>
                 <input type="password" name="password" placeholder="Password" required>
-                <input type="submit" class="login-btn" value="Register">
+                <input type="submit" class="btn" value="Register">
             </form>
 
             <!-- Link back to the login page -->
-            <button class="create-account-btn" onclick="window.location.href='index.php';">Back to Login</button>
+            <button class="btn" onclick="window.location.href='index.php';">Back to Login</button>
         </div>
     </div>
 </body>

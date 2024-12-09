@@ -5,61 +5,57 @@
     font-weight: 400;
 }
 
+* {
+    transition: all 0.3s; 
+}
+
 body {
     margin: 0;
     padding: 0;
     color: white;
+    overflow-x: hidden;
 }
 
-.navbar ul {
-    display: flex;
-}
-
-.navbar :nth-child(2) a:hover {
-    color: red;
-}
-
-.navbar li {
-    list-style: none;
-    margin-right: 50px;
-    font-weight: 500;
-    font-size: 20px;
-}
-
-.navbar li a {
+a {
     text-decoration: none;
     color: white;
-    transition: color 0.3s;
-}
-
-.navbar li a:hover {
-    color: #1879CA;
 }
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(52, 52, 52);
+    background-color: rgb(35, 35, 35);
     width: 100%;
     height: 75px;
-    margin: 0;
     padding: 10px;
-    box-shadow: 1px 1px 12px rgba(0, 0, 0, 1);
+    box-shadow: 1px 1px 12px rgba(0, 0, 0, .2);
     position: sticky;
     top: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 999;
 }
 
-.logo {
+.navbar ul {
     display: flex;
-    align-items: center;
-    margin-right: 20px;
+    gap: 20px;
+    list-style: none;
+}
+
+.navbar li {
+    visibility: hidden;
+    margin-right: 50px;
+    font-weight: 500;
+    font-size: 20px;
 }
 
 .logo img {
     height: 140px;
+}
+
+.navbar li a:hover {
+    color: #1879CA;
+
 }
 
 .hero {
@@ -72,45 +68,35 @@ body {
 }
 
 .hero .login {
+    text-align: center;
+    align-items: center;
     padding: 35px 30px;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0,.6);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
     border-radius: 20px;
-    box-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(5px);
 }
 
 /* Original Sizes for Fields and Buttons */
-.hero .login input,
-.hero .login #email,
-.hero .login #password,
-.hero .login #first_name,
-.hero .login #last_name,
-.hero .login #phone_number {
+.hero .login input {
     display: block;
     padding: 2px 20px;
-    height: 45px; /* Original height */
-    width: 300px; /* Original width */
+    height: 45px; 
+    width: 100%; 
     outline: none;
     border: none;
-    border-radius: 20px; /* Oval shape */
+    border-radius: 20px; 
     margin-bottom: 25px;
     box-sizing: border-box;
-    transition: box-shadow 0.15s ease-in-out;
+    transition: all 0.15s ease-in-out;
 }
 
-/* Keep oval shape and size on focus */
-.hero .login input:focus,
-.hero .login #email:focus,
-.hero .login #password:focus,
-.hero .login #first_name:focus,
-.hero .login #last_name:focus,
-.hero .login #phone_number:focus {
+.hero .login input:focus {
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.15);
-    border-radius: 20px; /* Keep oval shape on focus */
 }
 
 /* Button Styling with Original Size */
-.login-btn, .create-account-btn {
+.btn{
     font-size: 14px;
     background-color: #1879CA;
     color: white;
@@ -127,30 +113,15 @@ body {
     margin-top: 15px; /* Adds space between the buttons */
 }
 
-/* Ensure the link inside the button has no color or underline */
-.create-account-btn a {
-    text-decoration: none; /* Removes the underline */
-    color: white; /* Makes the text color white */
-}
-
-.create-account-btn:hover, .login-btn:hover {
+.btn:hover {
     background-color: rgb(236, 236, 236);
     color: #1879CA;
 }
 
-.create-account-btn:focus, .login-btn:focus {
+.btn:focus {
     background-color: rgba(203, 203, 203, 0.6);
 }
 
-.create-account-btn:hover a {
-    color: #1879CA; /* Change text color on hover */
-}
-
-.create-account-btn:focus a {
-    color: #1879CA; /* Change text color when focused */
-}
-
-/* Added for User Home Page */
 .welcome {
     text-align: center;
     margin: 50px;
@@ -161,23 +132,3 @@ body {
     margin-bottom: 20px;
 }
 
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.button {
-    padding: 10px 20px;
-    text-decoration: none;
-    background-color: #1879CA;
-    color: white;
-    border-radius: 20px;
-    font-size: 1em;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.button:hover {
-    background-color: rgb(236, 236, 236);
-    color: #1879CA;
-}

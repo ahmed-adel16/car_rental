@@ -86,11 +86,16 @@ unset($_SESSION['error_message']);
             <form action="index.php" method="POST">
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
-                <input type="submit" class="login-btn" value="Login">
+                <input type="submit" class="btn" value="Login">
             </form>
 
+<<<<<<< Updated upstream
             <button class="create-account-btn" onclick="window.location.href='register.php';">Register</button>
             <button class="create-account-btn" onclick="window.location.href='admin_login.php';">Login as Admin</button> <!-- Admin login button -->
+=======
+            <button class="btn" onclick="window.location.href='register.php';">Register</button>
+            <button class="btn" onclick="window.location.href='admin_login.php';">Login as Admin</button> <!-- Admin login button -->
+>>>>>>> Stashed changes
         </div>
     </div>
 </body>
