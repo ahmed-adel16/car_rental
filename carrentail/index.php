@@ -1,12 +1,45 @@
 <?php
 session_start(); // Initialize session
 
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 require_once 'db_connect.php'; // Database connection
+
+if (isset($_SESSION['admin_id'])) {
+    header("Location: admin_dashboard.php");
+    exit();
+}
+if (isset($_SESSION['customer_id'])) {
+    header("Location: user_home.php");
+    exit();
+}
+
+function emailExists($email, $conn) {
+    $stmt = $conn->prepare('SELECT * FROM Customers WHERE email = ?');
+    $stmt -> bind_param('s', $email);
+    $stmt -> execute();
+    $result = $stmt -> get_result();
+
+    if ($result -> num_rows > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 // Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
+
+    // Server-side validation for email existence
+    if (!emailExists($email, $conn)) {
+        $_SESSION['error_message'] = "Invalid email or password.";
+        header("Location: index.php");
+        exit();
+    }
 
     // Prepare and execute the query to prevent SQL injection
     $stmt = $conn->prepare("SELECT * FROM Customers WHERE email = ?");
@@ -21,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Check if the password is correct
         if (password_verify($password, $user['password'])) {
             // Successful login: Set session variables
-            $_SESSION['user_id'] = $user['customer_id']; // Store user ID in session
+            $_SESSION['customer_id'] = $user['customer_id']; // Store user ID in session
             $_SESSION['first_name'] = $user['first_name']; // Store first name in session
             $_SESSION['success_message'] = "Login successful!";
 
@@ -47,6 +80,7 @@ $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] 
 unset($_SESSION['success_message']);
 unset($_SESSION['error_message']);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -89,13 +123,8 @@ unset($_SESSION['error_message']);
                 <input type="submit" class="btn" value="Login">
             </form>
 
-<<<<<<< Updated upstream
-            <button class="create-account-btn" onclick="window.location.href='register.php';">Register</button>
-            <button class="create-account-btn" onclick="window.location.href='admin_login.php';">Login as Admin</button> <!-- Admin login button -->
-=======
             <button class="btn" onclick="window.location.href='register.php';">Register</button>
             <button class="btn" onclick="window.location.href='admin_login.php';">Login as Admin</button> <!-- Admin login button -->
->>>>>>> Stashed changes
         </div>
     </div>
 </body>

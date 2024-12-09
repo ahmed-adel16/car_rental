@@ -3,7 +3,7 @@ session_start();
 require_once 'db_connect.php';
 
 // Redirect to login if the user is not logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['customer_id'])) {
     header("Location: index.php");
     exit();
 }

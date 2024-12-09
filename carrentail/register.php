@@ -1,16 +1,31 @@
 <?php
 session_start();
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
 
-// Database connection
-$servername = "localhost";
-$username = "root"; // Change this to your MySQL username
-$password = ""; // Change this to your MySQL password
-$dbname = "CarRentalSystem"; // The name of your database
+require_once 'db_connect.php';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+if (isset($_SESSION['admin_id'])) {
+    header("Location: admin_dashboard.php");
+    exit();
+}
+if (isset($_SESSION['customer_id'])) {
+    header("Location: user_home.php");
+    exit();
+}
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+function emailExists($email, $conn) {
+    $stmt = $conn->prepare('SELECT * FROM Customers WHERE email = ?');
+    $stmt -> bind_param('s', $email);
+    $stmt -> execute();
+    $result = $stmt -> get_result();
+
+    if ($result -> num_rows > 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // Registration logic
@@ -28,6 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
+    // Check if email already exists
+    if (emailExists($email, $conn)) {
+        $_SESSION['error_message'] = 'Email already exists';
+        header("Location: register.php");
+        exit();
+    }
+
     // Hash the password securely
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -40,14 +62,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['success_message'] = "Registration successful! Please log in.";
         header("Location: index.php");
         exit();
-    } else {
-        // Handle error
-        $_SESSION['error_message'] = "Error: " . $sql . "<br>" . $conn->error;
     }
 
     $conn->close();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
