@@ -76,27 +76,22 @@ unset($_SESSION['error_message']);
             <!-- Add Car Form -->
             <form action="add_car_action.php" method="POST">
 
-                <label for="model">Car Model:</label>
-                <input type="text" id="model" name="model" required>
+                <input type="text" id="model" name="model" placeholder = 'Model' required>
 
-                <label for="year">Year:</label>
-                <input type="number" id="year" name="year" required>
+                <input type="number" id="year" name="year" placeholder = 'Year' required>
 
-                <label for="year">Plate ID:</label>
-                <input type="text" id="plate-id" name="plate-id" required>
+                <input type="text" id="plate-id" name="plate-id" placeholder = 'Plate ID' required>
 
-                <label for="status">Status:</label>
                 <select id="status" name="status" required>
+                    <option value="" disabled selected>Status</option>
                     <option value="active">Active</option>
                     <option value="out of service">Out of Service</option>
                     <option value="rented">Rented</option>
                 </select>
 
-                <label for="price_per_day">Price per Day:</label>
-                <input type="number" id="price_per_day" name="price_per_day" step="10" required>
+                <input  type="number" id="price_per_day" name="price_per_day" step="10" placeholder = 'Price per day' required>
 
-                <label for="office_name">Office Name:</label>
-                <select id="office_name" name="office_name" required>
+                <select id="office-name" name="office-name" placeholder = 'Office name' required>
                     <?php
                         $query = "SELECT office_name FROM offices";
                         $result = $conn->query($query);
@@ -112,8 +107,12 @@ unset($_SESSION['error_message']);
                         $conn->close(); // Close the database connection
                     ?>
                 </select>                
-
+                
+                <label class = 'custom-file-label' for="car-image">Upload Image</label>
+                <input class = 'upload-btn' type="file" name="car-image" id="car-image" accept = 'image/*' required>
+                        
                 <input type="submit" class="btn" value="Add Car">
+
             </form>
 
             <form action="admin_dashboard.php" method="GET">

@@ -131,3 +131,22 @@ a {
     font-size: 2em;
     margin-bottom: 20px;
 }
+
+
+.hero .login .upload-btn {
+    display: none;
+}
+
+
+.hero .login .custom-file-label {
+    font-size: 22px;
+    background-color: #4c9900;
+    display: inline-block;
+    padding: 12px 24px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+.hero .login .custom-file-label:hover {
+    background-color: #eee;
+    color: #4c9900;
+}

@@ -1,35 +1,4 @@
 <?php
-session_start();
-
-require_once 'db_connect.php';
-
-if (!isset($_SESSION['customer_id'])) {
-    header("Location: index.php");
-    exit();
-}
-
-// Placeholder logic for reservation (adjust as needed)
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Process reservation here (e.g., save the car reservation to the database)
-    $_SESSION['success_message'] = "Reservation successful!";
-    header("Location: reserve.php");
-    exit();
-}
-
-$sql = 'SELECT * FROM cars JOIN offices ON offices.office_id = cars.office_id';
-$result = $conn -> query($sql);
-
-if (!$result) {
-    die('Query faild'. $conn-> error);
-}
-
-$cars = [];
-
-while ($row = $result -> fetch_assoc()){
-    $cars[] = $row;
-}
-
-
 function renderCarCards($cars) {
     $output = '<div class="car-container">';
     foreach ($cars as $car) {
@@ -62,42 +31,4 @@ function renderCarCards($cars) {
     $output .= '</div>';
     return $output;
 }
-
-
-
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserve Your Car</title>
-    <link rel="stylesheet" href="reserve.css">
-</head>
-<body>
-    <nav class="navbar">
-        <ul>
-            <!-- Change Home link to user_home.php -->
-            <li><a href="logout.php">↩ Log out</a></li>
-        </ul>
-        <div class="logo">
-            <a href="user_home.php"><img src="images/logo.png" alt="Car Rental Logo"></a>
-        </div>
-    </nav>
-
-    
-    <h1>Reserve Your Dream Car</h1>
-
-    <section class="car-section">
-        
-    <?php 
-    include 'sidebar.php';
-    ?>
-
-        <div class="car-container">
-            <?php echo renderCarCards($cars); ?>
-        </div>
-    </section>
-</body>
-</html>
