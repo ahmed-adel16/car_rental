@@ -1,91 +1,205 @@
 :root {
     direction: ltr;
-    position: relative;
-    font-family: Roboto, Arial;
+    font-family: Roboto, Arial, sans-serif;
     font-weight: 400;
+}
+
+* {
+    transition: all 0.3s;
 }
 
 body {
     margin: 0;
     padding: 0;
-    background-color: #eee;
+    background: linear-gradient(to bottom, #111111, #181818);
+    color: white;
+    overflow-x: hidden;
+    text-align: center;
+    
 }
 
-.navbar ul{
-    display: flex;
-}
 
-.navbar :nth-child(2) a:hover{
-    color: red;
-}
-
-.navbar li{
-    list-style: none;
-    margin-right: 50px;
-    font-weight: 500;
-    font-size: 20px;
-}
-.navbar li a{
+a {
     text-decoration: none;
     color: white;
-    transition: color 0.3s;
 }
-
-.navbar li a:hover{
-    color: #1879CA;
-}
-
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(52, 52, 52);
+    background-color: rgb(35, 35, 35);
+    box-shadow: 1px 1px 12px rgba(0, 0, 0, .2);
     width: 100%;
     height: 75px;
     margin: 0;
     padding: 10px;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
     position: sticky;
     top: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 999;
 }
 
-.logo {
+.navbar ul {
     display: flex;
-    align-items: center;
-    margin-right: 20px;
+    gap: 20px;
+    list-style: none;
 }
+
+.navbar li {
+    margin-right: 50px;
+    font-weight: 500;
+    font-size: 20px;
+}
+
 .logo img {
     height: 140px;
 }
 
-.car-section .car-container .car-card {
-    width: 23%;
-    min-width: 250px;
-    padding: 10px 12px;
-    border : 1px solid #cce7d0;
-    border-radius: 25px;
-    cursor: pointer;
-    box-shadow: 20px 20px 30px rgba(0, 0, 0, .02);
-    margin: 5px 0px;
-    transition: box-shadow 0.2s ease;
-    position: relative;
-}
-.car-section .car-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding-top: 20px;
-    margin: 0px 50px 0px 50px;
+.navbar li a:hover {
+    color: #b70000;
+
 }
 
+.btn{
+    font-size: 14px;
+    background-color: #1879CA;
+    color: white;
+    transition: all 0.3s;
+    cursor: pointer;
+    display: block;
+    padding: 2px 20px;
+    height: 45px; /* Original button height */
+    width: 300px; /* Original button width */
+    outline: none;
+    border: none;
+    border-radius: 30px;
+    box-sizing: border-box;
+    margin-top: 15px; 
+}
+
+.btn:hover {
+    background-color: rgb(236, 236, 236);
+    color: #1879CA;
+}
+
+.btn:focus {
+    background-color: rgba(203, 203, 203, 0.6);
+}
+
+
 .car-section {
-   text-align: center;
+    display: flex;
+    text-align: center;
+    padding: 20px;
+}
+
+.car-section h1 {
+    margin-bottom: 20px;
+    font-size: 36px;
+}
+
+.car-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.car-card {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border: 1px solid #444;
+    border-radius: 15px;
+    width: 280px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.car-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.09);
 }
 
 .car-card img {
     width: 100%;
-    border-radius: 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
+
+.car-card .description h2 {
+    margin: 10px 0;
+    font-size: 22px;
+}
+
+.car-card .description span {
+    font-size: 14px;
+    color: #aaa;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.car-card p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.reserve-btn {
+    background-color: #1879CA;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.reserve-btn:hover {
+    background-color: #fff;
+    color: #1879CA;
+}
+
+
+.sidebar {
+    width: 35%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    background-color: rgb(35, 35, 35);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background-color: #f0f0f0;
+}
+
+.sidebar select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: #111111;
+    color: white;
+    border-radius: 3px;
+    outline: none;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+}
+

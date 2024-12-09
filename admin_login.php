@@ -15,6 +15,7 @@ if (isset($_SESSION['customer_id'])) {
     header("Location: user_home.php");
     exit();
 }
+
 // Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
