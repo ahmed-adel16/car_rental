@@ -1,6 +1,7 @@
 <?php
 session_start(); // Initialize session
 
+require_once 'db_connect.php';
 // Ensure the user is logged in as admin
 if (!isset($_SESSION['admin_id'])) {
     // Redirect to login page if not an admin
@@ -22,36 +23,7 @@ unset($_SESSION['error_message']);
     <title>Add Car - Car Rental</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* General button style */
-        .btn {
-            display: inline-block;
-            background-color: #1879CA; /* Primary color */
-            color: white; /* White text */
-            padding: 10px 20px; /* Padding for oval shape */
-            border: none;
-            border-radius: 20px; /* Fully rounded corners for oval shape */
-            font-size: 16px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none; /* Remove underline from links */
-            transition: background-color 0.3s, color 0.3s;
-            margin-top: 15px; /* Adds space between the button and the form */
-            width: 100%; /* Makes the button the same width as input fields */
-            max-width: 300px; /* Limits the width to match input fields */
-            margin-left: auto; /* Centers the button */
-            margin-right: auto; /* Centers the button */
-        }
 
-        .btn:hover {
-            background-color: rgb(236, 236, 236); /* Hover background color */
-            color: #1879CA; /* Hover text color */
-        }
-
-        .btn:focus {
-            background-color: rgba(203, 203, 203, 0.6); /* Focus background color */
-        }
-
-        /* Style for input fields and the location dropdown */
         input[type="text"], input[type="number"], input[type="email"], select {
             width: 100%;
             padding: 10px;
@@ -110,6 +82,9 @@ unset($_SESSION['error_message']);
                 <label for="year">Year:</label>
                 <input type="number" id="year" name="year" required>
 
+                <label for="year">Plate ID:</label>
+                <input type="text" id="plate-id" name="plate-id" required>
+
                 <label for="status">Status:</label>
                 <select id="status" name="status" required>
                     <option value="active">Active</option>
@@ -120,17 +95,27 @@ unset($_SESSION['error_message']);
                 <label for="price_per_day">Price per Day:</label>
                 <input type="number" id="price_per_day" name="price_per_day" step="10" required>
 
-                <label for="office_id">Office Location:</label>
-                <select id="office_id" name="office_id" required>
-                    <option value="1">Alexandria</option>
-                    <option value="2">Giza</option>
-                    <option value="3">Cairo</option>
-                </select>
+                <label for="office_name">Office Name:</label>
+                <select id="office_name" name="office_name" required>
+                    <?php
+                        $query = "SELECT office_name FROM offices";
+                        $result = $conn->query($query);
+
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<option value="' . htmlspecialchars($row['office_name']) . '">' . ucfirst($row['office_name']) . '</option>';
+                            }
+                        } else {
+                            echo '<option value="">No locations available</option>';
+                        }
+
+                        $conn->close(); // Close the database connection
+                    ?>
+                </select>                
 
                 <input type="submit" class="btn" value="Add Car">
             </form>
 
-            <!-- Back to Admin Dashboard -->
             <form action="admin_dashboard.php" method="GET">
                 <input type="submit" class="btn" value="Back to Dashboard">
             </form>
