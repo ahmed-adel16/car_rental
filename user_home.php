@@ -13,6 +13,14 @@ $first_name = $_SESSION['first_name'] ?? ''; // We saved the first name during l
 
 // Navbar Link Logic
 $homeLink = isset($_SESSION['customer_id']) ? "user_home.php" : "index.php";
+
+// Check for success message
+if (isset($_SESSION['success_message'])) {
+    $success_message = $_SESSION['success_message'];
+    unset($_SESSION['success_message']); // Clear the message after displaying
+} else {
+    $success_message = '';
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +30,17 @@ $homeLink = isset($_SESSION['customer_id']) ? "user_home.php" : "index.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Home - Car Rental</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Success message styling */
+        .success-message {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -38,6 +57,11 @@ $homeLink = isset($_SESSION['customer_id']) ? "user_home.php" : "index.php";
     <div class="hero">
         <div class="login">
             <h2>Welcome, <?php echo htmlspecialchars($first_name); ?>!</h2>
+
+            <!-- Display success message if exists -->
+            <?php if ($success_message): ?>
+                <div class="success-message"><?php echo htmlspecialchars($success_message); ?></div>
+            <?php endif; ?>
 
             <button class="btn" onclick="window.location.href='logout.php';">Logout</button>
             <button class="btn" onclick="window.location.href='view_reserved.php';">View Reserved Cars</button>

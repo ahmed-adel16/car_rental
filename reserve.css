@@ -212,3 +212,6 @@ a {
     transition: border-color 0.3s;
 }
 
+.disabled {
+    display: none;
+}

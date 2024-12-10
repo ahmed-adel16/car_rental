@@ -150,3 +150,7 @@ a {
     background-color: #eee;
     color: #4c9900;
 }
+
+.disabled {
+    display: none;
+}

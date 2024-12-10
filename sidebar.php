@@ -1,15 +1,23 @@
+<?php 
+$price =  $_GET['price_range'] ?? 1000;
+?>
 <aside class="sidebar">
             <h3>Filter</h3>
             <form method="GET" action="filter_results.php">
                 <ul>
                     <li>
-                        <label for="price-range">Price Range:</label>
-                        <select id="price-range" name="price_range">
-                            <option value="" disabled selected>Select Price</option>
-                            <option value="low" <?php if ($price_range == 'low') echo 'selected'; ?>>1000 LE - 2000 LE/day</option>
-                            <option value="medium" <?php if ($price_range == 'medium') echo 'selected'; ?>>2000 LE - 3000 LE/day</option>
-                            <option value="high" <?php if ($price_range == 'high') echo 'selected'; ?>>3000+ LE/day</option>
-                        </select>
+                    <label for="price-range-slider">Price Range:</label>
+                    <div class="price-range-slider">
+                        <input type="range" id="min-price-slider" name="min_price"
+                            min="500" max="3500" step="100"
+                            value="<?php echo isset($min_price) ? $min_price : '1000'; ?>"
+                            oninput="updatePriceRangeText(this.value, document.getElementById('max-price-slider').value)">
+                        <input type="range" id="max-price-slider" name="max_price"
+                            min="500" max="3500" step="100"
+                            value="<?php echo isset($max_price) ? $max_price : '3000'; ?>"
+                            oninput="updatePriceRangeText(document.getElementById('min-price-slider').value, this.value)"><br>
+                        <span id="price-range-text"><?php echo isset($min_price) ? $min_price : '1000'; ?> - <?php echo isset($max_price) ? $max_price : '3000'; ?> LE/Day</span>
+                    </div>
                     </li>
                     <li>
                         <label for="car-location">Location:</label>
@@ -56,3 +64,9 @@
                 </ul>
             </form>
         </aside>
+<script>
+function updatePriceRangeText(min, max) {
+    document.getElementById('price-range-text').innerText =  min + ' - ' +  max + ' LE/day';
+}
+
+</script>
