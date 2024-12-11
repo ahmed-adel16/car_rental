@@ -2,6 +2,7 @@
 session_start();
 require_once 'db_connect.php';
 include 'generate_car.php';
+
 if (!isset($_SESSION['customer_id'])) {
     header("Location: index.php");
     exit();
@@ -13,12 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['car_id'], $_POST['star
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
 
-    // Calculate the total price
-    $query = "SELECT price_per_day FROM Cars WHERE car_id = ?";
+    // Fetch car details including office_id
+    $query = "SELECT price_per_day, office_id FROM Cars WHERE car_id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $car_id);
     $stmt->execute();
-    $stmt->bind_result($price_per_day);
+    $stmt->bind_result($price_per_day, $office_id); // Fetch both price_per_day and office_id
     $stmt->fetch();
     $stmt->close();
 
@@ -30,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['car_id'], $_POST['star
     $total_price = $total_days * $price_per_day;
 
     // Insert reservation into the database
-    $insert_reservation = $conn->prepare("INSERT INTO Reservations (customer_id, car_id, start_date, end_date, reservation_status, total_price) VALUES (?, ?, ?, ?, 'rented', ?)");
-    $insert_reservation->bind_param("iissd", $_SESSION['customer_id'], $car_id, $start_date, $end_date, $total_price);
+    $insert_reservation = $conn->prepare("INSERT INTO Reservations (customer_id, car_id, office_id, start_date, end_date, reservation_status, total_price) VALUES (?, ?, ?, ?, ?, 'rented', ?)");
+    $insert_reservation->bind_param("iiissd", $_SESSION['customer_id'], $car_id, $office_id, $start_date, $end_date, $total_price);
     $insert_reservation->execute();
 
     // Update car status to rented
@@ -45,7 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['car_id'], $_POST['star
     exit();
 }
 
-$sql = 'SELECT * FROM cars JOIN offices ON offices.office_id = cars.office_id';
+$sql = 'SELECT cars.*, offices.office_name, offices.location, offices.office_id 
+        FROM cars 
+        JOIN offices ON offices.office_id = cars.office_id';
 $result = $conn->query($sql);
 
 if (!$result) {
@@ -57,7 +60,6 @@ $cars = [];
 while ($row = $result->fetch_assoc()) {
     $cars[] = $row;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -68,8 +70,7 @@ while ($row = $result->fetch_assoc()) {
     <title>Reserve Your Car</title>
     <link rel="stylesheet" href="reserve.css">
     <link rel="stylesheet" href="modal.css">
-    <script src = 'script.js'></script>
-    
+    <script src='script.js'></script>
 </head>
 <body>
     <nav class="navbar">
