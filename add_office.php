@@ -145,8 +145,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <nav class="navbar">
         <ul>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="reserve.php">Reserve</a></li>
+            <li><a href="logout.php">↩ logout</a></li>
+            <li><a href="admin_dashboard.php">Dashboard</a></li>
         </ul>
         <div class="logo">
             <a href="index.php"><img src="images/logo.png" alt="Logo"></a>

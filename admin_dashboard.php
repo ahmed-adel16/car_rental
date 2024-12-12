@@ -25,6 +25,7 @@ unset($_SESSION['error_message']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Car Rental</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cards.css">
     <style>
         /* Remove the underline from the anchor tags */
         a {
@@ -50,7 +51,7 @@ unset($_SESSION['error_message']);
 
     <div class="hero">
         <div class="login">
-            <h2>Welcome, Admin!</h2>
+            <h2 class = 'header'>Welcome, Admin!</h2>
 
             <?php if ($success_message): ?>
                 <div class="success" style="color: green; margin-bottom: 10px;">
@@ -65,18 +66,36 @@ unset($_SESSION['error_message']);
             <?php endif; ?>
 
             <!-- Add Office Button (Redirects to add_office.php) -->
+            <div class="function-card">
             <a href="add_office.php">
-                <button class="btn login-btn">Add Office</button>
+                <button class=" login-btn">Add Office</button>
             </a>
+            </div>
+
+            <div class="function-card">
+            <a href="manage_reservations.php">
+                <button class=" login-btn">Manage Reservations</button>
+            </a>
+            </div>
+
+            <div class="function-card">
+            <a href="daily_payment_report.php">
+                <button class = " login-btn">Daily Payment Report</button>
+            </a>
+            </div>
 
             <!-- Add Car Button (Redirects to add_car.php) -->
-            <a href="add_car.php">
-                <button class="btn login-btn">Add Car</button>
-            </a>
+            <div class="function-card">
+                <a href="add_car.php">
+                    <button class=" login-btn">Add Car</button>
+                </a>
+            </div>
 
             <!-- Logout Button -->
             <form action="logout.php" method="POST">
-                <input type="submit" class="btn" value="Logout">
+                <div class = 'function-card'>
+                    <input type="submit" class="btn logout-btn" value="Logout">
+                </div>
             </form>
         </div>
     </div>

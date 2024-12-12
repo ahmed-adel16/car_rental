@@ -105,7 +105,7 @@ unset($_SESSION['error_message']);
             <form action="admin_login.php" method="POST">
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
-                <input type="submit" class="btn login-btn" value="Login">
+                <button type="submit" class="btn login-btn" >Login</button>
             </form>
 
             <button class="btn" onclick="window.location.href='index.php';">Go Back</button>

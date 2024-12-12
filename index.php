@@ -105,26 +105,15 @@ unset($_SESSION['error_message']);
         <div class="login">
             <h2>Login</h2>
 
-            <?php if ($success_message): ?>
-                <div class="success" style="color: green; margin-bottom: 10px;">
-                    <?php echo htmlspecialchars($success_message); ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($error_message): ?>
-                <div class="error" style="color: red; margin-bottom: 10px;">
-                    <?php echo htmlspecialchars($error_message); ?>
-                </div>
-            <?php endif; ?>
-
             <form action="index.php" method="POST">
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <input type="submit" class="btn" value="Login">
+                <input type="email" class = 'email' name="email" placeholder="Email" required>
+                <input type="password" class = 'pw' name="password" placeholder="Password" required>
+                <button type="submit" class="btn">Login</button>
             </form>
 
-            <button class="btn" onclick="window.location.href='register.php';">Register</button>
-            <button class="btn" onclick="window.location.href='admin_login.php';">Login as Admin</button> <!-- Admin login button -->
+            <button class="btn" onclick="window.location.href='admin_login.php';">Login as Admin</button> 
+            <p class= 'hyperlink'>Don't have an account? <a class = 'register-hyperlink' href="register.php">register</a></p>
+
         </div>
     </div>
 </body>

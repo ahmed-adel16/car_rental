@@ -9,10 +9,63 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $model = $_POST['model'];
+    $year = intval($_POST['year']);
+    $price = floatval($_POST['price_per_day']);
+    $status = $_POST['status'];
+    $image_name = $_POST['car-image'];
+    $office_name = $_POST['office-name'];
+
+    // Fetch the office ID based on the office name
+    $office_sql = 'SELECT office_id FROM offices WHERE office_name = ?';
+    $stmt = $conn->prepare($office_sql);
+    $stmt->bind_param("s", $office_name);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
+
+    if ($row) {
+        $office_id = $row['office_id'];
+
+        // Insert car into the database
+        $sql = "INSERT INTO cars (model, year, price_per_day, status, image, office_id) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sidssi", $model, $year, $price, $status, $image_name, $office_id);
+
+        if ($stmt->execute()) {
+            $_SESSION['success_message'] = 'car added successfully';
+        } else {
+            $_SESSION['error_message'] = 'invalid inputs';
+        }
+
+        $stmt->close();
+    } else {
+        $_SESSION['error_message'] = 'office is not found';
+    }
+
+    $conn->close();
+    header("Location: add_car.php"); // Redirect back to the form
+    exit;
+}
+
+
 $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
 $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
 unset($_SESSION['success_message']);
 unset($_SESSION['error_message']);
+
+$style = '
+            "
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            "
+        ';
 ?>
 
 <!DOCTYPE html>
@@ -44,13 +97,29 @@ unset($_SESSION['error_message']);
             font-size: 16px;
             background-color: #fff;
         }
+        .success {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .success {
+            background-color: #880000;
+            color: white;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <ul>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="reserve.php">Reserve</a></li>
+            <li><a href="logout.php">↩ logout</a></li>
+            <li><a href="admin_dashboard.php">Dashboard</a></li>
         </ul>
         <div class="logo">
             <a href="index.php"><img src="images/logo.png" alt="Logo"></a>
@@ -62,19 +131,20 @@ unset($_SESSION['error_message']);
             <h2>Add Car</h2>
 
             <?php if ($success_message): ?>
-                <div class="success" style="color: green; margin-bottom: 10px;">
+                <div class="success">
                     <?php echo htmlspecialchars($success_message); ?>
                 </div>
             <?php endif; ?>
 
             <?php if ($error_message): ?>
-                <div class="error" style="color: red; margin-bottom: 10px;">
+                <div class="error">
                     <?php echo htmlspecialchars($error_message); ?>
                 </div>
             <?php endif; ?>
 
+
             <!-- Add Car Form -->
-            <form action="add_car_action.php" method="POST">
+            <form action="add_car.php" method="POST">
 
                 <input type="text" id="model" name="model" placeholder = 'Model' required>
 

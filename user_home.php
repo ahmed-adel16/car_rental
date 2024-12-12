@@ -58,7 +58,7 @@ if (isset($_SESSION['success_message'])) {
         <div class="login">
             <h2>Welcome, <?php echo htmlspecialchars($first_name); ?>!</h2>
 
-            <!-- Display success message if exists -->
+            <!-- Display success message if existss -->
             <?php if ($success_message): ?>
                 <div class="success-message"><?php echo htmlspecialchars($success_message); ?></div>
             <?php endif; ?>

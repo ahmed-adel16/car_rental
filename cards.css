@@ -1,0 +1,42 @@
+
+
+.login {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px;
+    max-width: 30%;
+    max-height: fit-content;
+    justify-content: center;
+    padding: 0;
+} 
+
+.header {
+    flex: 1 0 100%;
+}
+
+.function-card {
+    flex: 0 1 33%;
+    box-sizing: border-box;
+    
+}
+
+.function-card a button, .hero .login .logout-btn{
+    padding: 30px;
+    width: 195px;
+    height: 120px;
+    background-color: #1879CA;
+    color: white;
+    font-size: 18px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px;
+}
+
+.function-card a button:hover, .hero .login .logout-btn:hover{
+    box-shadow: -4px 4px 0px #000;
+    transform: translate(3px, -3px);
+    background-color: white;
+    color: #1879CA;
+}

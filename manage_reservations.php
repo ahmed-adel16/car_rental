@@ -11,7 +11,8 @@ if (!isset($_SESSION['admin_id'])) {
 // Initialize filter variables
 $customer_name_filter = isset($_GET['customer_name']) ? $_GET['customer_name'] : '';
 $car_model_filter = isset($_GET['car_model']) ? $_GET['car_model'] : '';
-$status_filter = isset($_GET['status']) ? $_GET['status'] : '';
+$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
+$end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
 // Fetch customers for the dropdown
 $customer_query = "SELECT customer_id, CONCAT(first_name, ' ', last_name) AS customer_name FROM Customers";
@@ -30,9 +31,8 @@ $sql = "
         o.location AS office_location,
         r.start_date,
         r.end_date,
-        r.total_price,
-        r.reservation_status
-    FROM Reservations r
+        r.total_price
+        FROM Reservations r
     JOIN Customers c ON r.customer_id = c.customer_id
     JOIN Cars car ON r.car_id = car.car_id
     JOIN Offices o ON r.office_id = o.office_id
@@ -48,9 +48,14 @@ if ($car_model_filter) {
     $sql .= " AND car.model LIKE '%" . $conn->real_escape_string($car_model_filter) . "%'";
 }
 
-if ($status_filter) {
-    $sql .= " AND r.reservation_status = '" . $conn->real_escape_string($status_filter) . "'";
+if ($start_date) {
+    $sql .= " AND r.start_date >= '" . $conn->real_escape_string($start_date) . "'";
 }
+
+if ($end_date) {
+    $sql .= " AND r.end_date <= '" . $conn->real_escape_string($end_date) . "'";
+}
+
 
 // Execute the query
 $result = $conn->query($sql);
@@ -94,18 +99,13 @@ if ($result) {
             font-size: 20px;
             color: red;
         }
-        .filter-form input,
-        .filter-form select {
-            padding: 5px;
-            margin: 5px;
-            border-radius: 50px;
-        }
+
     </style>
 </head>
 <body>
     <nav class="navbar">
         <ul>
-            <li><a href="index.php">Home</a></li>
+            <li><a href="logout.php">↩ logout</a></li>
             <li><a href="admin_dashboard.php">Dashboard</a></li>
         </ul>
         <div class="logo">
@@ -119,7 +119,7 @@ if ($result) {
 
             <!-- Filter Form -->
             <form class="filter-form" action="manage_reservations.php" method="GET">
-                <select name="customer_name">
+                <select class = 'selection' name="customer_name">
                     <option value="">Select Customer</option>
                     <?php while ($customer = $customer_result->fetch_assoc()): ?>
                         <option value="<?php echo htmlspecialchars($customer['customer_name']); ?>" 
@@ -129,7 +129,7 @@ if ($result) {
                     <?php endwhile; ?>
                 </select>
 
-                <select name="car_model">
+                <select class = 'selection' name="car_model">
                     <option value="">Select Car Model</option>
                     <?php while ($car = $car_result->fetch_assoc()): ?>
                         <option value="<?php echo htmlspecialchars($car['model']); ?>" 
@@ -139,12 +139,9 @@ if ($result) {
                     <?php endwhile; ?>
                 </select>
 
-                <select name="status">
-                    <option value="">Select Status</option>
-                    <option value="rented" <?php echo ($status_filter == 'rented') ? 'selected' : ''; ?>>Rented</option>
-                    <option value="available" <?php echo ($status_filter == 'available') ? 'selected' : ''; ?>>Available</option>
-                    <option value="out of service" <?php echo ($status_filter == 'out of service') ? 'selected' : ''; ?>>Out of Service</option>
-                </select>
+                <input class = 'selection' type="date" name="start_date" value="<?php echo htmlspecialchars($start_date); ?>">
+                <input class = 'selection' type="date" name="end_date" value="<?php echo htmlspecialchars($end_date); ?>">
+                
 
                 <button type="submit">Filter</button>
             </form>
@@ -160,7 +157,6 @@ if ($result) {
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Total Price</th>
-                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -173,7 +169,6 @@ if ($result) {
                                 <td><?php echo htmlspecialchars($row['start_date']); ?></td>
                                 <td><?php echo htmlspecialchars($row['end_date']); ?></td>
                                 <td><?php echo htmlspecialchars($row['total_price']); ?></td>
-                                <td><?php echo htmlspecialchars($row['reservation_status']); ?></td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
