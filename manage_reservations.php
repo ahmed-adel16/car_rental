@@ -105,7 +105,7 @@ if ($result) {
 <body>
     <nav class="navbar">
         <ul>
-            <li><a href="logout.php">↩ logout</a></li>
+            <li><a href="Auth/logout.php">↩ logout</a></li>
             <li><a href="admin_dashboard.php">Dashboard</a></li>
         </ul>
         <div class="logo">
@@ -143,7 +143,7 @@ if ($result) {
                 <input class = 'selection' type="date" name="end_date" value="<?php echo htmlspecialchars($end_date); ?>">
                 
 
-                <button type="submit">Filter</button>
+                <button type="submit" class='filter-btn'>Filter</button>
             </form>
 
             <?php if ($result->num_rows > 0): ?>

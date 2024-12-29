@@ -15,12 +15,10 @@ $first_name = $_SESSION['first_name'] ?? ''; // We saved the first name during l
 $homeLink = isset($_SESSION['customer_id']) ? "user_home.php" : "index.php";
 
 // Check for success message
-if (isset($_SESSION['success_message'])) {
-    $success_message = $_SESSION['success_message'];
-    unset($_SESSION['success_message']); // Clear the message after displaying
-} else {
-    $success_message = '';
-}
+$success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
+$error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+unset($_SESSION['success_message']);
+unset($_SESSION['error_message']);
 ?>
 
 <!DOCTYPE html>
@@ -34,6 +32,14 @@ if (isset($_SESSION['success_message'])) {
         /* Success message styling */
         .success-message {
             background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .error-message {
+            background-color:rgb(105, 0, 0);
             color: white;
             padding: 15px;
             margin: 20px 0;
@@ -61,6 +67,9 @@ if (isset($_SESSION['success_message'])) {
             <!-- Display success message if existss -->
             <?php if ($success_message): ?>
                 <div class="success-message"><?php echo htmlspecialchars($success_message); ?></div>
+            <?php endif; ?>
+            <?php if ($error_message): ?>
+                <div class="error-message"><?php echo htmlspecialchars($error_message); ?></div>
             <?php endif; ?>
 
             <button class="btn" onclick="window.location.href='logout.php';">Logout</button>

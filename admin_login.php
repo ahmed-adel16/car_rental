@@ -74,6 +74,24 @@ unset($_SESSION['error_message']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Car Rental</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .success-message {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .error-message {
+            background-color:rgb(125, 2, 0) ;
+            color: white;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -91,13 +109,13 @@ unset($_SESSION['error_message']);
             <h2>Admin Login</h2>
 
             <?php if ($success_message): ?>
-                <div class="success" style="color: green; margin-bottom: 10px;">
+                <div class="success-message">
                     <?php echo htmlspecialchars($success_message); ?>
                 </div>
             <?php endif; ?>
 
             <?php if ($error_message): ?>
-                <div class="error" style="color: red; margin-bottom: 10px;">
+                <div class="error-message">
                     <?php echo htmlspecialchars($error_message); ?>
                 </div>
             <?php endif; ?>

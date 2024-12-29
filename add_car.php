@@ -157,6 +157,7 @@ $style = '
                     <option value="active">Active</option>
                     <option value="out of service">Out of Service</option>
                     <option value="rented">Rented</option>
+                    <option value="rented">Upcoming</option>
                 </select>
 
                 <input  type="number" id="price_per_day" name="price_per_day" step="10" placeholder = 'Price per day' required>

@@ -1,5 +1,6 @@
 <?php 
 $price =  $_GET['price_range'] ?? 1000;
+
 ?>
 <aside class="sidebar">
             <h3>Filter</h3>

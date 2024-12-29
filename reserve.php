@@ -2,7 +2,7 @@
 session_start();
 require_once 'db_connect.php';
 include 'generate_car.php';
-
+$current_date = date('Y-m-d');
 if (!isset($_SESSION['customer_id'])) {
     header("Location: index.php");
     exit();
@@ -19,11 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['car_id'], $_POST['star
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $car_id);
     $stmt->execute();
-    $stmt->bind_result($price_per_day, $office_id); // Fetch both price_per_day and office_id
+    $stmt->bind_result($price_per_day, $office_id);
     $stmt->fetch();
     $stmt->close();
 
-    // Calculate the total price without validation for duration
+    // Calculate the total price
     $start_date_obj = new DateTime($start_date);
     $end_date_obj = new DateTime($end_date);
     $interval = $start_date_obj->diff($end_date_obj);
@@ -31,21 +31,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['car_id'], $_POST['star
     $total_price = $total_days * $price_per_day;
 
     // Insert reservation into the database
-    $insert_reservation = $conn->prepare("INSERT INTO Reservations (customer_id, car_id, office_id, start_date, end_date, reservation_status, total_price) VALUES (?, ?, ?, ?, ?, 'rented', ?)");
-    $insert_reservation->bind_param("iiissd", $_SESSION['customer_id'], $car_id, $office_id, $start_date, $end_date, $total_price);
-    $insert_reservation->execute();
+    $insert_reservation = $conn->prepare(
+        "INSERT INTO Reservations (customer_id, car_id, office_id, start_date, end_date, reservation_status, total_price) 
+         VALUES (?, ?, ?, ?, ?, 'upcoming', ?)"
+    );
+    $insert_reservation->bind_param(
+        "iiissd",
+        $_SESSION['customer_id'],
+        $car_id,
+        $office_id,
+        $start_date,
+        $end_date,
+        $total_price
+    );
+    if ($start_date >= $current_date && $end_date > $start_date)
+        $insert_reservation->execute();
+    else {
+        $_SESSION['error_message'] = "Invalid dates. Please enter valid dates.";
+        header("Location: user_home.php");
+        exit();
+    }
 
-    // Update car status to rented
-    $update_car_status = $conn->prepare("UPDATE Cars SET status = 'rented' WHERE car_id = ?");
-    $update_car_status->bind_param("i", $car_id);
-    $update_car_status->execute();
 
     // Redirect to user_home.php with success message
-    $_SESSION['success_message'] = "Car reserved successfully!";
+    $_SESSION['success_message'] = "Car reserved successfully! It will be rented starting from the reservation start date.";
     header("Location: user_home.php");
     exit();
 }
 
+// Fetch car details for rendering
 $sql = 'SELECT cars.*, offices.office_name, offices.location, offices.office_id 
         FROM cars 
         JOIN offices ON offices.office_id = cars.office_id';
@@ -56,11 +70,11 @@ if (!$result) {
 }
 
 $cars = [];
-
 while ($row = $result->fetch_assoc()) {
     $cars[] = $row;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -103,7 +117,7 @@ while ($row = $result->fetch_assoc()) {
 
                 <!-- Start Date Label and Input -->
                 <label for="start-date">Start Date:</label>
-                <input type="date" id="start-date" name="start_date" required onchange="calculateTotalPrice()">
+                <input type="date" id="start-date" name="start_date" value="<?php echo date('Y-m-d'); ?>" required onchange="calculateTotalPrice()">
 
                 <!-- End Date Label and Input -->
                 <label for="end-date">End Date:</label>

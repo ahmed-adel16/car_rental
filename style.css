@@ -169,7 +169,6 @@ a {
     display: none;
 }
 
-
 .hyperlink .register-hyperlink {
     font-size: 18px;
     color: #0083ed;
@@ -179,3 +178,32 @@ a {
     text-decoration: underline;
 }
 
+.filter-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: white;
+    width: 70px;
+    height: 40px;
+}
+
+.filter-btn:hover {
+    background-color: #a4a4a4;
+}
+
+.hero .login .reservation-container .reservation button {
+    width: 100px;
+    margin: 5px auto;
+    border: none;
+    background-color: rgba(229, 48, 48, 0.9);
+    color: white ;
+    font-weight: bold;
+    cursor: pointer;
+}
+.hero .login .reservation-container .reservation button:hover {
+    width: 100px;
+    margin: 5px auto;
+    background-color: rgba(229, 48, 48, 0.6);
+    color: white;
+    font-weight: bold;
+}

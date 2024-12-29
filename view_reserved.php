@@ -14,7 +14,7 @@ $user_id = $_SESSION['customer_id'];
 $query = "SELECT r.reservation_id, c.model, c.year, r.start_date, r.end_date, r.total_price 
           FROM Reservations r
           JOIN Cars c ON r.car_id = c.car_id
-          WHERE r.customer_id = ? AND r.reservation_status = 'rented'";
+          WHERE r.customer_id = ? AND r.reservation_status = 'rented' OR r.reservation_status = 'upcoming'";
 
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $user_id);
@@ -34,6 +34,23 @@ while ($row = $result->fetch_assoc()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Reserved Cars - Car Rental</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+
+        .reservation-container {
+            padding: 10px;
+            margin-bottom: 10px;
+            display:flex;
+            width:900px;
+            flex-wrap:wrap;
+        }
+        .reservation {
+            flex : 1 1 25%;
+            border:1px solid white;
+            margin:10px;
+            padding:10px 0;
+        }
+    </style>
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -51,17 +68,24 @@ while ($row = $result->fetch_assoc()) {
         <div class="login">
             <h2>Your Reserved Cars:</h2>
             
+            <div class="reservation-container">
             <?php if (!empty($reserved_cars)): ?>
                 <?php foreach ($reserved_cars as $car): ?>
-                    <p><strong>Model:</strong> <?php echo htmlspecialchars($car['model']); ?></p>
-                    <p><strong>Year:</strong> <?php echo htmlspecialchars($car['year']); ?></p>
-                    <p><strong>Reservation Dates:</strong> <?php echo htmlspecialchars($car['start_date']); ?> to <?php echo htmlspecialchars($car['end_date']); ?></p>
-                    <p><strong>Total Price:</strong> <?php echo htmlspecialchars($car['total_price']); ?> LE</p>
-                    <hr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>You have not reserved any cars yet.</p>
-            <?php endif; ?>
+                    <div class="reservation">
+                        <p><strong>Model:</strong> <?php echo htmlspecialchars($car['model']); ?></p>
+                        <p><strong>Year:</strong> <?php echo htmlspecialchars($car['year']); ?></p>
+                        <p><strong>Reservation Dates:</strong> <?php echo htmlspecialchars($car['start_date']); ?> to <?php echo htmlspecialchars($car['end_date']); ?></p>
+                        <p><strong>Total Price:</strong> <?php echo htmlspecialchars($car['total_price']); ?> LE</p>
+                        <form action="cancel_reservation.php" method="POST">
+                            <input type="hidden" name="reservation_id" value="<?php echo htmlspecialchars($car['reservation_id']); ?>">
+                            <button type="submit" class="btn cancel">Cancel</button>
+                        </form>
+                    </div>
+            <?php endforeach; ?>
+                <?php else: ?>
+                    <p>You have not reserved any cars yet.</p>
+                <?php endif; ?>
+            </div>
 
             <!-- Back to Dashboard button -->
             <button class="btn" onclick="window.location.href='user_home.php';">Back to Dashboard</button>

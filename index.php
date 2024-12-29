@@ -78,7 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
 $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
 unset($_SESSION['success_message']);
-unset($_SESSION['error_message']);
 ?>
 
 
@@ -89,6 +88,24 @@ unset($_SESSION['error_message']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Car Rental</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .error {
+            background-color:rgb(125, 2, 0) ;
+            color: white;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .success {
+            background-color:rgb(125, 2, 0);
+            color: white;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -104,7 +121,11 @@ unset($_SESSION['error_message']);
     <div class="hero">
         <div class="login">
             <h2>Login</h2>
-
+            <?php if ($error_message): ?>
+                <div class="error">
+                    <?php echo htmlspecialchars($error_message); ?>
+                </div>
+            <?php endif; ?>
             <form action="index.php" method="POST">
                 <input type="email" class = 'email' name="email" placeholder="Email" required>
                 <input type="password" class = 'pw' name="password" placeholder="Password" required>

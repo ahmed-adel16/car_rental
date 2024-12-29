@@ -36,6 +36,25 @@ unset($_SESSION['error_message']);
         a:hover {
             text-decoration: none;
         }
+        /* Success message styling */
+        .success-message {
+            background-color: #4CAF50;
+            color: white;
+            flex:1 100%;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .error-message {
+            background-color:rgb(125, 2, 0) ;
+            flex:1 100%;
+            color: white;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -53,16 +72,12 @@ unset($_SESSION['error_message']);
         <div class="login">
             <h2 class = 'header'>Welcome, Admin!</h2>
 
+            <!-- Display success message if existss -->
             <?php if ($success_message): ?>
-                <div class="success" style="color: green; margin-bottom: 10px;">
-                    <?php echo htmlspecialchars($success_message); ?>
-                </div>
+                <div class="success-message"><?php echo htmlspecialchars($success_message); ?></div>
             <?php endif; ?>
-
             <?php if ($error_message): ?>
-                <div class="error" style="color: red; margin-bottom: 10px;">
-                    <?php echo htmlspecialchars($error_message); ?>
-                </div>
+                <div class="error-message"><?php echo htmlspecialchars($success_message); ?></div>
             <?php endif; ?>
 
             <!-- Add Office Button (Redirects to add_office.php) -->
@@ -75,6 +90,12 @@ unset($_SESSION['error_message']);
             <div class="function-card">
             <a href="manage_reservations.php">
                 <button class=" login-btn">Manage Reservations</button>
+            </a>
+            </div>
+
+            <div class="function-card">
+            <a href="car_report.php">
+                <button class=" login-btn">Car Report</button>
             </a>
             </div>
 
