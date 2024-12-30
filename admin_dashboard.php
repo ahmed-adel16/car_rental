@@ -11,7 +11,6 @@ if (!isset($_SESSION['admin_id'])) {
     header("Location: admin_login.php");
     exit();
 }
-
 $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
 $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
 unset($_SESSION['success_message']);
@@ -60,8 +59,12 @@ unset($_SESSION['error_message']);
 <body>
     <nav class="navbar">
         <ul>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="reserve.php">Reserve</a></li>
+            <li><a href="logout.php">↩ Log out</a></li>
+            <li><a href="add_car.php">Add car</a></li>
+            <li><a href="add_office.php">Add Office</a></li>
+            <li><a href="manage_reservations.php">Manage reservations</a></li>
+            <li><a href="car_report.php">Car Report</a></li>
+            <li><a href="daily_payment_report.php">Daily Payment Report</a></li>
         </ul>
         <div class="logo">
             <a href="index.php"><img src="images/logo.png" alt="Logo"></a>
@@ -105,7 +108,6 @@ unset($_SESSION['error_message']);
             </a>
             </div>
 
-            <!-- Add Car Button (Redirects to add_car.php) -->
             <div class="function-card">
                 <a href="add_car.php">
                     <button class=" login-btn">Add Car</button>

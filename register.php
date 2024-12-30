@@ -81,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <nav class="navbar">
         <ul>
             <li><a href="index.php">Home</a></li>
-            <li><a href="reserve.php">Reserve</a></li> <!-- Updated link -->
         </ul>
         <div class="logo">
             <a href="index.php"><img src="images/logo.png" alt="Logo"></a>

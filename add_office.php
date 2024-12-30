@@ -147,6 +147,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <ul>
             <li><a href="logout.php">↩ logout</a></li>
             <li><a href="admin_dashboard.php">Dashboard</a></li>
+            <li><a href="add_car.php">Add car</a></li>
+            <li><a href="manage_reservations.php">Manage reservations</a></li>
+            <li><a href="car_report.php">Car Report</a></li>
+            <li><a href="daily_payment_report.php">Daily Payment Report</a></li>
         </ul>
         <div class="logo">
             <a href="index.php"><img src="images/logo.png" alt="Logo"></a>

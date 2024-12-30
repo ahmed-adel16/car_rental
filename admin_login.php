@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $admin = $result->fetch_assoc();
 
         // Check if the password matches (without hashing)
-        if ($password === $admin['password']) {
+        if (password_verify($password, $admin['password'])) {
             // Successful login: Set session variables
             $_SESSION['admin_id'] = $admin['admin_id']; // Store admin ID in session
             $_SESSION['first_name'] = $admin['first_name']; // Store first name in session
@@ -97,7 +97,6 @@ unset($_SESSION['error_message']);
     <nav class="navbar">
         <ul>
             <li><a href="index.php">Home</a></li>
-            <li><a href="reserve.php">Reserve</a></li>
         </ul>
         <div class="logo">
             <a href="index.php"><img src="images/logo.png" alt="Logo"></a>

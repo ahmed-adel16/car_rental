@@ -111,7 +111,7 @@ unset($_SESSION['success_message']);
     <nav class="navbar">
         <ul>
             <li><a href="index.php">Home</a></li>
-            <li><a href="reserve.php">Reserve</a></li>
+            <li><a href="admin_login.php">Admin</a></li>
         </ul>
         <div class="logo">
             <a href="index.php"><img src="images/logo.png" alt="Logo"></a>

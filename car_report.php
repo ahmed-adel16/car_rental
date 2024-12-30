@@ -6,6 +6,12 @@ $selected_date = $_GET['report-day'] ?? null;
 $car_status_data = [];
 $current_date = date('Y-m-d'); // Get current date
 
+// Ensure the user is logged in as admin
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: admin_login.php");
+    exit();
+}
+
 if ($selected_date) {
     // Query to fetch car statuses for the selected date
     $query = "
@@ -86,8 +92,13 @@ if ($selected_date) {
 <body>
     <nav class="navbar">
         <ul>
-            <li><a href="index.php">Home</a></li>
-            <li><a href="reserve.php">Reserve</a></li>
+            <li><a href="logout.php">↩ Log out</a></li>
+            <li><a href="admin_dashboard.php">Dashboard</a></li>
+            <li><a href="add_car.php">Add car</a></li>
+            <li><a href="add_office.php">Add Office</a></li>
+            <li><a href="manage_reservations.php">Manage reservations</a></li>
+            <li><a href="car_report.php">Car Report</a></li>
+            <li><a href="daily_payment_report.php">Daily Payment Report</a></li>
         </ul>
         <div class="logo">
             <a href="index.php"><img src="images/logo.png" alt="Logo"></a>
